@@ -45,9 +45,11 @@ Trying to cast a predefined value to boolean True:
 from py_regulars import Collations
 
 >>> Collations.try_true('true')
+
 True
 
 >>> Collations.try_true('y')
+
 True
 ```
 Trying to cast a predefined value to boolean False:
@@ -55,9 +57,11 @@ Trying to cast a predefined value to boolean False:
 from py_regulars import Collations
 
 >>> Collations.try_false('FAlSe')
+
 False
 
 >>> Collations.try_false('N')
+
 False
 ```
 Trying to cast a predefined value to boolean:
@@ -65,9 +69,11 @@ Trying to cast a predefined value to boolean:
 from py_regulars import Collations
 
 >>> Collations.try_bool('T')
+
 True
 
 >>> Collations.try_bool('0')
+
 False
 ```
 PREDEFINED_TRUE_ARRAY = ("true", "t", "1", "yes", "y")  
@@ -79,9 +85,11 @@ Unpackage the first element that casts to True. If all elems cast to False, then
 from py_regulars import Collections
 
 >>> Collections.coalesce(0, 0, False, 'False', 1)
+
 'False'
 
 >>> Collections.coalesce(0, 0, False)
+
 False
 ```
 Get only unique subelements that can be non-hashable types. Strongly typed matches only!:
@@ -89,9 +97,11 @@ Get only unique subelements that can be non-hashable types. Strongly typed match
 from py_regulars import Collections
 
 >>> Collections.distinct(0, [0, 0, 0], False, 'False', (0, 0, 0), [0, 0, 0], 1)
+
 [0, [0, 0, 0], False, 'False', (0, 0, 0), 1]
 
 >>> Collections.distinct(10, False, 12, 13, {1, 1, 1}, 0, 4, 12, 6, 7)
+
 [10, False, 12, 13, {1}, 0, 4, 6, 7]
 ```
 Subtract beta from alfa and return a difference list:
@@ -102,6 +112,7 @@ from py_regulars import Collections
     [0, 0, 0, {1:2, 3:4}, 8, 9], 
     (0, 0, {3, 4}, 0, 6, 7)
 )
+
 [{1: 2, 3: 4}, 8, 9]
 
 >>> Collections.get_diff_list(
@@ -117,6 +128,7 @@ from py_regulars import Collections
     ((2,), (0,), {3, 4}, (-1,), 6, 7), 
     distinct=True
 )
+
 [(1,), {1: 2, 3: 4}, 8, 9]
 ```
 Calculate an intersection as common unique elements:
@@ -127,6 +139,7 @@ from py_regulars import Collections
     [0, 0, 0, {1:2, 3:4}, 8, 9, (8,), 0, 0, (8,)],
     (0, 0, {3, 4}, 0, 6, 7, (8,))
 )
+
 [0, (8,)]
 ```
 True if all distinct elements of alfa belong to elements as beta:
@@ -134,9 +147,11 @@ True if all distinct elements of alfa belong to elements as beta:
 from py_regulars import Collections
 
 >>> Collections.is_subset([0, 0, 0], (0, 0, {3, 4}, 0, 6, 7, (8,)))
+
 True
 
 >>> Collections.is_subset([0, 0, 0, 1], (0, 0, {3, 4}, 0, 6, 7, (8,)))
+
 False
 ```
 Split an array into parts of custom length:
@@ -176,12 +191,14 @@ from py_regulars import Collections
 >>> Collections.extract_subelements(
     {0: [0, 0, 0], 1: {1:2, 3:4}, 2: [8, 9]}
 )
+
 [0, 0, 0, {1: 2, 3: 4}, 8, 9]
 
 >>> Collections.extract_subelements(
     [(1, 2), (1, 4), (1, 5), (1, 1), {1:2, 3:4}, [8, 9], '2,1'],
     unique_items_only=True
 )
+
 [1, 2, 4, 5, {1: 2, 3: 4}, 8, 9, '2,1']
 ```
 ___
