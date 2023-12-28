@@ -3,9 +3,13 @@
 """
 __author__ = 'kokarev.nv'
 
+import json
+import functools
+
+from enum import StrEnum
 from re import findall
 from random import getrandbits
-from typing import Any, Optional, Union, Collection, Sequence
+from typing import Any, Optional, Union, Collection, Sequence, Callable
 from .constants import (
     PREDEFINED_TRUE_ARRAY, PREDEFINED_FALSE_ARRAY, VALID_ARRAY_TYPES, ONLY_NUMBERS_SYMBOLS
 )
@@ -609,3 +613,117 @@ class Validators:
                 error_msg = 'Invalid SNILS checksum.'
 
         return result, error_msg
+
+
+class SQLHelper:
+    """ SQL helper class.
+    """
+    class PgSqlType(StrEnum):
+        """ DTO. Enum with PostgreSQL data types"""
+        INT16 = 'smallint'
+        SMALLINT = 'smallint'
+        INT32 = 'int'
+        INTEGER = 'int'
+        INT64 = 'bigint'
+        BIGINT = 'bigint'
+        DECIMAL = 'numeric'
+        NUMERIC = 'numeric'
+        REAL = 'real'
+        DP = 'double precision'
+        DOUBLE_PRECISION = 'double precision'
+        TEXT = 'text'
+        TIMESTAMP = 'timestamp'
+        TIMESTAMP_TZ = 'timestamptz'
+        DATE = 'date'
+        TIME = 'time'
+        TIME_TZ = 'timetz'
+        INTERVAL = 'interval'
+        BOOL = 'boolean'
+        BOOLEAN = 'boolean'
+        UUID = 'uuid'
+        JSON = 'json'
+        JSONB = 'jsonb'
+        HSTORE = 'hstore'
+        AUTO = ''
+
+    def prepare_sql(func: Callable) -> Callable:
+        """ Decorator for preparing SQL queries for logging.
+        Args:
+            func (function): function to wrap.
+        Returns:
+            callable, wrapper func.
+        """
+
+        @functools.wraps(func)
+        def wrapper(sql_query: str) -> str:
+            """ Preparing an sql query. Getting rid of '', "' and 'None'.
+
+            Args:
+                sql_query (str): SQL template
+            Returns:
+                str, product of exec inp func.
+            """
+            sql_query = sql_query.replace('\'\"', '\'')
+            sql_query = sql_query.replace('\"\'', '\'')
+            sql_query = sql_query.replace('\'NULL\'', 'NULL')
+
+            return func(sql_query)
+
+        return wrapper
+
+    @prepare_sql
+    def logging_sql(query: str, qty_lines: int=20000) -> list:
+        """ Method for logging full sql query.
+            If the request length exceeds the qty_lines delimiter, then we break it up into several pages.
+
+        Args:
+            query (str): SQL template.
+            qty_lines (int, optional): Number of characters logged on one page.
+        Returns:
+            list, contains pages of tmpl, ready to print.
+        """
+        log_list = []
+
+        if query and len(query) > qty_lines:
+            for number_list in range(0, len(query), qty_lines):
+                log_list.append(query[number_list:number_list + qty_lines])
+        else:
+            log_list.append(query)
+
+    def hstore_to_dict(hstore: str) -> dict:
+        """ The method converts a hstore format string to a dict.
+
+        Args:
+            hstore (str): hstore format string in dict.
+        Returns:
+            dict
+        """
+        result_dict = {}
+        if hstore:
+            result_dict = json.loads('{' + hstore.replace('=>', ':').replace(':NULL', ':null') + '}')  # noqa: WPS336
+        return result_dict
+
+    @classmethod
+    def hstore_to_dict_recursive(cls, hstore: str) -> dict:
+        """ The method converts the hstore format string into a dict and nested entries.
+
+        Args:
+            hstore (str): hstore format string in dict.
+        Returns:
+            dict
+        """
+        result_dict = {}
+        if hstore:
+            result_dict = json.loads('{' + hstore.replace('=>', ':') + '}')  # noqa: WPS336
+            for k, v in result_dict.items():
+                try:
+                    new_value = cls.hstore_to_dict_recursive(v)
+                except json.decoder.JSONDecodeError:
+                    new_value = v
+
+                if isinstance(new_value, str) and new_value.isdigit():
+                    new_value = int(new_value)
+
+                result_dict[k] = new_value
+
+        return result_dict
