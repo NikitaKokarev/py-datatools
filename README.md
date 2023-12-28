@@ -1,4 +1,4 @@
-# py-regulars
+# py-datatools
 ## Helper functions for efficient work with common tasks
 ___
 ## How to use:
@@ -8,7 +8,7 @@ ___
 ### Common Functions:
 Execute callable object if condition statement is True:
 ```python
-from py_regulars import exec_if_cond
+from py_datatools import exec_if_cond
 
 condition = True
 
@@ -18,7 +18,7 @@ done well
 ```
 Raise exception if condition statement is True:
 ```python
-from py_regulars import raise_if_cond
+from py_datatools import raise_if_cond
 
 condition = True
 
@@ -38,51 +38,49 @@ Traceback (most recent call last):
   raise exc_class(error_msg)
 Exception: msg
 ```
-___
-### Collations:
 Trying to cast a predefined value to boolean True:
 ```python
-from py_regulars import Collations
+from py_datatools import try_true
 
->>> Collations.try_true('true')
+>>> try_true('true')
 
 True
 
->>> Collations.try_true('y')
+>>> try_true('y')
 
 True
 ```
 Trying to cast a predefined value to boolean False:
 ```python
-from py_regulars import Collations
+from py_datatools import try_false
 
->>> Collations.try_false('FAlSe')
+>>> try_false('FAlSe')
 
 False
 
->>> Collations.try_false('N')
+>>> try_false('N')
 
 False
 ```
 Trying to cast a predefined value to boolean:
 ```python
-from py_regulars import Collations
+from py_datatools import try_bool
 
->>> Collations.try_bool('T')
+>>> try_bool('T')
 
 True
 
->>> Collations.try_bool('0')
+>>> try_bool('0')
 
 False
 ```
-PREDEFINED_TRUE_ARRAY = ("true", "t", "1", "yes", "y")  
+PREDEFINED_TRUE_ARRAY = ("true", "t", "1", "yes", "y")
 PREDEFINED_FALSE_ARRAY = ("false", "f", "0", "no", "n")
 ___
 ### Collections:
 Unpackage the first element that casts to True. If all elems cast to False, then return the last element:
 ```python
-from py_regulars import Collections
+from py_datatools import Collections
 
 >>> Collections.coalesce(0, 0, False, 'False', 1)
 
@@ -94,7 +92,7 @@ False
 ```
 Get only unique subelements that can be non-hashable types. Strongly typed matches only!:
 ```python
-from py_regulars import Collections
+from py_datatools import Collections
 
 >>> Collections.distinct(0, [0, 0, 0], False, 'False', (0, 0, 0), [0, 0, 0], 1)
 
@@ -106,10 +104,10 @@ from py_regulars import Collections
 ```
 Subtract beta from alfa and return a difference list:
 ```python
-from py_regulars import Collections
+from py_datatools import Collections
 
 >>> Collections.get_diff_list(
-    [0, 0, 0, {1:2, 3:4}, 8, 9], 
+    [0, 0, 0, {1:2, 3:4}, 8, 9],
     (0, 0, {3, 4}, 0, 6, 7)
 )
 
@@ -117,15 +115,15 @@ from py_regulars import Collections
 
 >>> Collections.get_diff_list(
     [
-        (1,), 
-        (1,), 
-        (1,), 
-        (1,), 
-        {1:2, 3:4}, 
-        8, 
+        (1,),
+        (1,),
+        (1,),
+        (1,),
+        {1:2, 3:4},
+        8,
         9
-    ], 
-    ((2,), (0,), {3, 4}, (-1,), 6, 7), 
+    ],
+    ((2,), (0,), {3, 4}, (-1,), 6, 7),
     distinct=True
 )
 
@@ -133,7 +131,7 @@ from py_regulars import Collections
 ```
 Calculate an intersection as common unique elements:
 ```python
-from py_regulars import Collections
+from py_datatools import Collections
 
 >>> Collections.get_common_uniques(
     [0, 0, 0, {1:2, 3:4}, 8, 9, (8,), 0, 0, (8,)],
@@ -144,7 +142,7 @@ from py_regulars import Collections
 ```
 True if all distinct elements of alfa belong to elements as beta:
 ```python
-from py_regulars import Collections
+from py_datatools import Collections
 
 >>> Collections.is_subset([0, 0, 0], (0, 0, {3, 4}, 0, 6, 7, (8,)))
 
@@ -156,7 +154,7 @@ False
 ```
 Split an array into parts of custom length:
 ```python
-from py_regulars import Collections
+from py_datatools import Collections
 
 >>> ans_gen = Collections.split_sequence_gen([0, 0, 0, {1:2, 3:4}, 8, 9], 4)
 
@@ -166,27 +164,19 @@ from py_regulars import Collections
 [0, 0, 0, {1: 2, 3: 4}]
 [8, 9]
 
->>> ans_gen = Collections.split_sequence_gen('0,0,d0,fgderg8_ytert9(9)', 2)
+>>> ans_gen = Collections.split_sequence_gen('0,0,d0,f', 2)
 
 >>> for item in ans_gen:
         print(item)
-        
+
 0,
 0,
 d0
 ,f
-gd
-er
-g8
-_y
-te
-rt
-9(
-9)
 ```
 Extract elements of subcollections inside:
 ```python
-from py_regulars import Collections
+from py_datatools import Collections
 
 >>> Collections.extract_subelements(
     {0: [0, 0, 0], 1: {1:2, 3:4}, 2: [8, 9]}
@@ -202,7 +192,125 @@ from py_regulars import Collections
 [1, 2, 4, 5, {1: 2, 3: 4}, 8, 9, '2,1']
 ```
 ___
+### Numbers:
+Unpackage the first element that casts to True. If all elems cast to False, then return the last element:
+```python
+from py_datatools import Numbers
+
+>>> Numbers.parse_int(b'2')
+
+50
+```
+Try to get a int number:
+```python
+from py_datatools import Numbers
+
+>>> Numbers.try_int('2')
+
+2
+
+>>> Numbers.try_int(2.1)
+
+2
+```
+Try to get a float number:
+```python
+from py_datatools import Numbers
+
+>>> Numbers.try_float('2.1')
+
+2.1
+
+>>> Numbers.try_float(2)
+
+2.0
+```
+Creates a formatted counter of type 2.0M, 1.3K from an integer:
+```python
+from py_datatools import Numbers
+
+>>> Numbers.get_formatted_tooltip(1001)
+
+1K
+
+>>> Numbers.get_formatted_tooltip(100000)
+
+100K
+
+>>> Numbers.get_formatted_tooltip(999500)
+
+1M
+```
+Random number generator from random n-bits with increment +1:
+```python
+from py_datatools import Numbers
+
+>>> gen_func = Numbers.unique_id(8)
+>>> next(gen_func)
+
+213
+>>> next(gen_func)
+
+214
+```
+Get numbers in str, without the risk of injections or errors, then paste them into the request:
+```python
+from py_datatools import Numbers
+
+>>> Numbers.digitize_string('-a034h3kl56,78;')
+
+'-03435678'
+```
+___
+### Text:
+Trims long lines taking into account word wraps:
+```python
+from py_datatools import Text
+
+>>> Text.crop_text_line_by_line(
+        'long line longline long2line2long2 linelongline',
+        max_lines=100,
+        max_len_line=10
+    )
+
+'long line longline linelongline'
+```
+Function for parsing the full name string into its component parts:
+```python
+from py_datatools import Text
+
+>>> Text.parse_string_full_name('surname Name patronymic')
+
+['Surname', 'Name', 'Patronymic']
+
+>>> Text.parse_string_full_name('surname Double-name patronymic')
+
+['Surname', 'Double-Name', 'Patronymic']
+```
+___
+### Validators:
+Validation of the inn value in the context with the passed value kpp:
+```python
+from py_datatools import Validators
+
+>>> Validators.validate_inn('7727563778')
+
+(True, '')
+
+>>> Validators.validate_inn('7727563778666')
+
+(False, 'Wrong inn lenght: 7727563778666 (must be 10 or 12 characters)')
+```
+Validation of SNILS http://www.kholenkov.ru/data-validation/snils/:
+```python
+from py_datatools import Validators
+
+>>> Validators.validate_snils('08336732477')
+
+(True, '')
+```
+___
 ## Install package:
 ```
-pip3 install git+https://github.com/NikitaKokarev/py-regulars
+pip3 install git+https://github.com/NikitaKokarev/py-datatools
 ```

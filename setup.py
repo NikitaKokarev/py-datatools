@@ -6,14 +6,14 @@ with open("README.md", "r") as readme_file:
 # requirements = []
 
 setup(
-    name="py_regulars",
-    version="0.0.1",
+    name="py_datatools",
+    version="1.0",
     author="Nikita Kokarev",
     author_email="kokarevnickita@gmail.com",
     description="Helper functions",
     long_description=readme,
     long_description_content_type="text/markdown",
-    url="https://github.com/NikitaKokarev/py-regulars/",
+    url="https://github.com/NikitaKokarev/py-datatools/",
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3.7",
