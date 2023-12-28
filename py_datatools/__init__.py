@@ -9,7 +9,8 @@ INIT PY_DATATOOLS
 __author__ = 'kokarev.nv'
 
 from .py_datatools import (
-    exec_if_cond, raise_if_cond, try_true, try_false, try_bool, Collections, Numbers, Text, CKey, Validators
+    exec_if_cond, raise_if_cond, try_true, try_false, try_bool, Collections, Numbers, Text, CKey, Validators,
+    SQLHelper
 )
 from .dt_helper import (
     is_period_week,
@@ -41,8 +42,8 @@ from .dt_helper import (
     in_current_period,
     is_last_month_day,
     is_first_month_day,
-    begin_of_currant_quarter,
-    end_of_currant_quarter,
+    begin_of_current_quarter,
+    end_of_current_quarter,
     timedelta_months,
     get_quarter_name,
     get_infinity_date,

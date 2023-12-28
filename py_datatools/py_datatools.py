@@ -690,6 +690,8 @@ class SQLHelper:
         else:
             log_list.append(query)
 
+        return log_list
+
     def hstore_to_dict(hstore: str) -> dict:
         """ The method converts a hstore format string to a dict.
 
