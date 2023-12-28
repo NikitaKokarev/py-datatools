@@ -619,7 +619,8 @@ class SQLHelper:
     """ SQL helper class.
     """
     class PgSqlType(Enum):
-        """ DTO. Enum with PostgreSQL data types"""
+        """ DTO. Enum with PostgreSQL data types.
+        """
         INT16 = 'smallint'
         SMALLINT = 'smallint'
         INT32 = 'int'
