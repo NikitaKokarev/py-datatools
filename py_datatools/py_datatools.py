@@ -648,6 +648,7 @@ class SQLHelper:
 
     def prepare_sql(func: Callable) -> Callable:
         """ Decorator for preparing SQL queries for logging.
+
         Args:
             func (function): function to wrap.
         Returns:

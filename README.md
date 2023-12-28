@@ -310,6 +310,53 @@ from py_datatools import Validators
 (True, '')
 ```
 ___
+### SQLHelper
+DTO. Enum with PostgreSQL data types:
+```python
+from py_datatools import SQLHelper
+
+>>> SQLHelper.PgSqlType.INT16.value
+
+'smallint'
+```
+Decorator for preparing SQL queries for logging:
+```python
+from py_datatools import SQLHelper
+
+>>> SQLHelper.prepare_sql
+
+<function SQLHelper.prepare_sql at ...>
+```
+Method for logging full sql query:
+```python
+"""
+@prepare_sql
+def logging_sql(query: str, qty_lines: int=20000) -> list:
+    ...
+"""
+from py_datatools import SQLHelper
+
+>>> SQLHelper.logging_sql()
+
+[' \'"1" =>\' "2NULL ']
+```
+The method converts a hstore format string to a dict:
+```python
+from py_datatools import SQLHelper
+
+>>> SQLHelper.hstore_to_dict(''' "1" => "2" ''')
+
+{'1': '2'}
+```
+The method converts the hstore format string into a dict and nested entries:
+```python
+from py_datatools import SQLHelper
+
+>>> SQLHelper.hstore_to_dict_recursive(''' "key1" => "value1", "key2" => "value2" ''')
+
+{'key1': 'value1', 'key2': 'value2'}
+```
+___
 ### Datetime helper
 ```python
 from py_datatools import (
