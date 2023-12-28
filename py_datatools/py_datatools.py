@@ -6,7 +6,7 @@ __author__ = 'kokarev.nv'
 import json
 import functools
 
-from enum import StrEnum
+from enum import Enum
 from re import findall
 from random import getrandbits
 from typing import Any, Optional, Union, Collection, Sequence, Callable
@@ -618,7 +618,7 @@ class Validators:
 class SQLHelper:
     """ SQL helper class.
     """
-    class PgSqlType(StrEnum):
+    class PgSqlType(Enum):
         """ DTO. Enum with PostgreSQL data types"""
         INT16 = 'smallint'
         SMALLINT = 'smallint'
