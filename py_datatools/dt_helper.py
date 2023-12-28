@@ -201,7 +201,7 @@ def get_end_period(date_end: date, type_period: str = PERIOD_TYPE_MONTH) -> [dat
         year = date_end.year if date_end.month < 12 else date_end.year + 1
         date_end_new = date_end.replace(year=year, month=month, day=1) - timedelta(days=1)
     if type_period == PERIOD_TYPE_QUARTER:
-        date_end_new = end_of_currant_quarter(date_end)
+        date_end_new = end_of_current_quarter(date_end)
     if type_period == PERIOD_TYPE_YEAR:
         date_end_new = date_end.replace(year=date_end.year+1, month=1, day=1) - timedelta(days=1)
     date_begin, date_end = date_end, date_end_new
@@ -453,7 +453,7 @@ def is_first_month_day(day: date) -> bool:
     return (day - timedelta(days=1)).month != day.month
 
 
-def begin_of_currant_quarter(currant_date: date) -> date:
+def begin_of_current_quarter(current_date: date) -> date:
     """ The method finds the start date of the quarter in which the current date falls.
 
     Args:
@@ -462,21 +462,21 @@ def begin_of_currant_quarter(currant_date: date) -> date:
         quarter start date
     """
     # находим даты начал кварталов текущего года
-    currant_quarter = date(year=currant_date.year, month=1, day=1)
-    second_quarter = date(year=currant_date.year, month=4, day=1)
-    third_quarter = date(year=currant_date.year, month=7, day=1)
-    fourth_quarter = date(year=currant_date.year, month=10, day=1)
+    current_quarter = date(year=current_date.year, month=1, day=1)
+    second_quarter = date(year=current_date.year, month=4, day=1)
+    third_quarter = date(year=current_date.year, month=7, day=1)
+    fourth_quarter = date(year=current_date.year, month=10, day=1)
     # отбираем дату квартала, в промежуток которой попала текущая дата
-    if fourth_quarter <= currant_date:
-        currant_quarter = fourth_quarter
-    elif third_quarter <= currant_date:
-        currant_quarter = third_quarter
-    elif second_quarter <= currant_date:
-        currant_quarter = second_quarter
-    return currant_quarter
+    if fourth_quarter <= current_date:
+        current_quarter = fourth_quarter
+    elif third_quarter <= current_date:
+        current_quarter = third_quarter
+    elif second_quarter <= current_date:
+        current_quarter = second_quarter
+    return current_quarter
 
 
-def end_of_currant_quarter(currant_date: date) -> date:
+def end_of_current_quarter(current_date: date) -> date:
     """ The method finds the last date of the quarter in which the current date falls.
 
     Args:
@@ -484,7 +484,7 @@ def end_of_currant_quarter(currant_date: date) -> date:
     Returns:
         last date of the quarter
     """
-    begin_quarter = begin_of_currant_quarter(currant_date)
+    begin_quarter = begin_of_current_quarter(current_date)
     return to_end_of_month(date(year=begin_quarter.year, month=begin_quarter.month + 2, day=1))
 
 
@@ -510,7 +510,7 @@ def timedelta_months(sourcedate: str, months: int) -> timedelta:
     return delta
 
 
-def get_quarter_name(currant_date: date) -> str:
+def get_quarter_name(current_date: date) -> str:
     """ Return the name of the quarter (Roman numeral).
 
     Args:
@@ -519,32 +519,32 @@ def get_quarter_name(currant_date: date) -> str:
         name of the quarter
     """
     date_name = None
-    if 1 <= currant_date.month < 4:
+    if 1 <= current_date.month < 4:
         date_name = 'I'
-    elif 4 <= currant_date.month < 7:
+    elif 4 <= current_date.month < 7:
         date_name = 'II'
-    elif 7 <= currant_date.month < 10:
+    elif 7 <= current_date.month < 10:
         date_name = 'III'
-    elif 10 <= currant_date.month:
+    elif 10 <= current_date.month:
         date_name = 'IV'
     return date_name
 
 
-def get_infinity_date(currant_date) -> date:
-    """ Return the maximum date if currant_date is infinity.
+def get_infinity_date(current_date) -> date:
+    """ Return the maximum date if current_date is infinity.
 
     Args:
         current_date: date
     Returns:
         maximum date
     """
-    if isinstance(currant_date, str):
-        if currant_date == 'infinity' or currant_date is None:
-            currant_date = date(9999, 12, 31)
+    if isinstance(current_date, str):
+        if current_date == 'infinity' or current_date is None:
+            current_date = date(9999, 12, 31)
         else:
-            currant_date = datetime.strptime(currant_date, "%Y-%m-%d").date()
+            current_date = datetime.strptime(current_date, "%Y-%m-%d").date()
 
-    return currant_date
+    return current_date
 
 
 def delta_month_two_period(first: datetime, second: datetime) -> int:
